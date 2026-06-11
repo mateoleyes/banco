@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>NovaBanco</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Nunito',sans-serif}
+:root{--bg:#100825;--bg2:#1a0f38;--bg3:#211450;--bg4:#2a1860;--pur:#6c3fc5;--pur3:#a78bfa;--purbal:#c4b5fd;--grn:#10b981;--red:#f87171;--txt2:#a094c4;--bord:rgba(140,100,250,0.2)}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;color:#fff}
+#app{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.sc{display:none;flex-direction:column;height:100%;overflow:hidden}.sc.on{display:flex}
+.sb{height:52px;display:flex;align-items:center;justify-content:space-between;padding:10px 18px 0;flex-shrink:0}
+.sb-t{font-size:17px;font-weight:800}
+.sb-r{display:flex;align-items:center;gap:5px}
+.sig{display:flex;align-items:flex-end;gap:2px}.sig span{background:#fff;border-radius:1px;width:3px;display:block}
+.fiveg{font-size:13px;font-weight:900}
+.bat-b{width:22px;height:12px;border:1.5px solid rgba(255,255,255,.6);border-radius:2px;padding:1.5px;position:relative}
+.bat-b::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:2px;height:5px;background:rgba(255,255,255,.5);border-radius:0 1px 1px 0}
+.bat-f{height:100%;background:#fff;border-radius:1px;width:28%}
+.bat-p{font-size:11px;font-weight:700}
+.nav{height:78px;background:var(--bg2);border-top:1px solid var(--bord);display:flex;justify-content:space-around;padding:10px 0 0;padding-bottom:env(safe-area-inset-bottom,12px);flex-shrink:0}
+.ni{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;cursor:pointer;padding:3px 4px;border-radius:8px;-webkit-tap-highlight-color:rgba(108,63,197,.15)}
+.ni svg{width:22px;height:22px;stroke:var(--txt2);fill:none;stroke-width:2}
+.ni span{font-size:10px;font-weight:700;color:var(--txt2)}
+.ni.on svg{stroke:var(--pur3)}.ni.on span{color:var(--pur3)}
+.ni.bdg{position:relative}.ni.bdg::after{content:'';position:absolute;top:1px;right:8px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--bg2)}
+.sa{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px;overscroll-behavior:contain}.sa::-webkit-scrollbar{display:none}
+.av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;position:relative}
+.av-sub{position:absolute;bottom:-4px;right:-4px;background:var(--bg);border-radius:3px;font-size:7px;font-weight:900;color:var(--pur3);padding:1px 3px;border:1px solid var(--bg2)}
+.ctabs{display:flex;background:var(--bg2);border-radius:30px;padding:3px;width:fit-content;margin:16px auto}
+.ctab{padding:8px 24px;border-radius:26px;font-size:13px;font-weight:800;cursor:pointer;color:var(--txt2)}.ctab.on{background:var(--pur);color:#fff}
+.qas{display:flex;justify-content:space-around;padding:0 8px;margin-bottom:16px}
+.qa{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.qa-ic{width:54px;height:54px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;border:1px solid var(--bord)}
+.qa-ic svg{width:23px;height:23px;stroke:var(--pur3);fill:none;stroke-width:2}
+.qa span{font-size:12px;font-weight:700;color:var(--txt2)}
+.cw{padding:0 14px;display:flex;flex-direction:column;gap:10px}
+.pc{border-radius:14px;background:var(--bg2);border:1px solid var(--bord);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.svc-c{border-radius:14px;background:var(--bg2);border:1px solid var(--bord);padding:14px 16px}
+.inv-c{border-radius:14px;background:linear-gradient(135deg,#1e1a5e,#2d1f6e);border:1px solid rgba(124,58,237,.3);padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.tr-hd{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.srchb{margin:0 14px 12px;background:var(--bg2);border-radius:12px;border:1px solid var(--bord);display:flex;align-items:center;padding:11px 14px;gap:9px;flex-shrink:0}
+.srchb input{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:600;flex:1;font-family:'Nunito',sans-serif}
+.srchb input::placeholder{color:var(--txt2)}
+.tacts{display:flex;gap:8px;padding:0 14px 14px;flex-shrink:0}
+.ta{flex:1;background:var(--bg2);border:1px solid var(--bord);border-radius:14px;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.ta svg{width:21px;height:21px;stroke:var(--pur3);fill:none;stroke-width:2}
+.ta span{font-size:10px;font-weight:700;color:var(--txt2);text-align:center}
+.ta.pri{background:var(--pur);border-color:var(--pur)}.ta.pri svg{stroke:#fff}.ta.pri span{color:#fff}
+.intlb{margin:0 14px 14px;background:var(--bg2);border:1px solid var(--pur);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sl{padding:6px 20px 4px;font-size:12px;font-weight:800;color:var(--txt2);letter-spacing:.5px;flex-shrink:0}
+.cl{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px;overscroll-behavior:contain}.cl::-webkit-scrollbar{display:none}
+.ci{display:flex;align-items:center;gap:13px;padding:13px 20px;cursor:pointer}.ci:active{background:rgba(124,58,237,.08)}
+.cinfo{flex:1;min-width:0}.cnm{font-size:15px;font-weight:800;color:#fff}.cdt{font-size:12px;font-weight:600;color:var(--txt2);margin-top:1px}
+.cbk{display:flex;gap:4px;margin-top:4px}.bb{font-size:10px;font-weight:800;background:rgba(124,58,237,.18);color:var(--pur3);border-radius:6px;padding:2px 7px;display:flex;align-items:center;gap:3px}
+.cm{color:var(--txt2);padding:6px;flex-shrink:0;cursor:pointer}.cm svg{width:18px;height:18px;stroke:var(--txt2);fill:none;stroke-width:2}
+.amt-hd{display:flex;align-items:center;padding:12px 20px 6px;flex-shrink:0}
+.bkb{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+.bkb svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+.amt-ci{display:flex;flex-direction:column;align-items:center;padding:6px 20px 14px;flex-shrink:0}
+.amt-av{width:58px;height:58px;border-radius:50%;overflow:hidden;margin-bottom:8px;flex-shrink:0}
+.amt-nm{font-size:18px;font-weight:900;margin-bottom:6px;color:#fff}
+.amt-cbu{display:flex;align-items:center;gap:6px;background:var(--bg2);border-radius:20px;padding:6px 14px;border:1px solid var(--bord)}
+.amt-cbu span{font-size:11px;font-weight:700;color:var(--txt2)}
+.amt-da{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px}
+.amt-val{font-size:54px;font-weight:300;letter-spacing:-2px;color:#fff}
+.amt-sal{font-size:13px;font-weight:700;color:var(--txt2);margin-top:8px}
+.cbtn{margin:8px 20px 10px;background:#fff;border:none;border-radius:30px;padding:17px;font-size:17px;font-weight:900;color:var(--pur);cursor:pointer;width:calc(100% - 40px);font-family:'Nunito',sans-serif;flex-shrink:0}
+.cbtn:active{opacity:.85}
+.np{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bord);flex-shrink:0}
+.nk{background:var(--bg);padding:16px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-right:1px solid var(--bord);border-bottom:1px solid var(--bord)}
+.nk:nth-child(3n){border-right:none}.nk:active{background:var(--bg4)}
+.nk .n{font-size:24px;font-weight:400;color:#fff;line-height:1}.nk .l{font-size:8px;color:var(--txt2);margin-top:2px;letter-spacing:1.5px;font-weight:800}
+.nk.del .n{font-size:20px;color:var(--txt2)}
+#ldOv{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;flex-direction:column;align-items:center;justify-content:center}
+#ldOv.on{display:flex}
+.spin{width:44px;height:44px;border:3.5px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:sp .75s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.an-in{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px}
+.an-chk{width:80px;height:80px;border-radius:50%;border:2.5px solid rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;margin-bottom:20px;animation:pop .45s cubic-bezier(.34,1.56,.64,1) both}
+.an-chk svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:2.5;stroke-dasharray:52;stroke-dashoffset:52;animation:dsh .35s .28s ease forwards;stroke-linecap:round;stroke-linejoin:round}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes dsh{to{stroke-dashoffset:0}}
+.an-ti{font-size:23px;font-weight:900;margin-bottom:8px;text-align:center;color:#fff}
+.an-sub{font-size:15px;font-weight:600;color:var(--txt2);text-align:center;margin-bottom:26px;line-height:1.5;padding:0 10px}
+.an-btns{display:flex;gap:10px}
+.an-btn{background:var(--bg2);border:1px solid var(--bord);border-radius:14px;padding:15px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;min-width:88px}
+.an-btn:active{background:var(--bg4)}.an-btn svg{width:22px;height:22px;stroke:var(--pur3);fill:none;stroke-width:2}
+.an-btn span{font-size:11px;font-weight:800;color:var(--txt2)}
+.bhm{margin:0 20px 14px;background:var(--bg2);border:1px solid var(--bord);border-radius:18px;padding:17px;font-size:16px;font-weight:800;color:#fff;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;flex-shrink:0;border-top:none}
+.bhm:active{background:var(--bg4)}
+.pt{position:absolute;border-radius:50%;pointer-events:none}
+.card-vis{margin:0 14px 14px;border-radius:20px;background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7);padding:22px;min-height:165px;position:relative;overflow:hidden}
+.card-chip{width:30px;height:22px;background:rgba(255,215,0,.75);border-radius:4px;margin-bottom:18px}
+.card-no{font-size:14px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.card-row{display:flex;justify-content:space-between;align-items:flex-end}
+.card-lbl{font-size:9px;font-weight:800;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px}
+.card-val{font-size:13px;font-weight:800;margin-top:2px;color:#fff}
+.card-visa{font-size:22px;font-weight:900;font-style:italic;position:absolute;bottom:22px;right:22px;color:#fff}
+.card-wave{position:absolute;right:-20px;top:-20px;width:130px;height:130px;border-radius:50%;border:36px solid rgba(255,255,255,.06)}
+.cacts{display:flex;gap:8px;padding:0 14px 14px}
+.ca{flex:1;background:var(--bg2);border:1px solid var(--bord);border-radius:14px;padding:13px 4px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ca svg{width:20px;height:20px;stroke:var(--pur3);fill:none;stroke-width:2}
+.ca span{font-size:10px;font-weight:800;color:var(--txt2);text-align:center}
+.ci-blk{margin:0 14px 14px;background:var(--bg2);border-radius:14px;border:1px solid var(--bord);overflow:hidden}
+.ci-ti{font-size:14px;font-weight:900;padding:14px 16px 10px;color:#fff}
+.ci-row{display:flex;justify-content:space-between;padding:11px 16px;border-top:1px solid rgba(255,255,255,.05)}
+.ci-lbl{font-size:13px;font-weight:600;color:var(--txt2)}.ci-val{font-size:13px;font-weight:800;color:#fff}
+.mod-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:400;align-items:flex-end}
+.mod-ov.on{display:flex}
+.mod-sh{background:var(--bg2);border-radius:24px 24px 0 0;padding:22px 20px;width:100%;padding-bottom:max(28px,env(safe-area-inset-bottom));border-top:1px solid var(--bord)}
+.mod-hdl{width:36px;height:4px;background:var(--txt2);border-radius:2px;margin:0 auto 18px;opacity:.4}
+.mod-ti{font-size:17px;font-weight:900;margin-bottom:16px;text-align:center;color:#fff}
+.mod-inp{width:100%;background:var(--bg3);border:1px solid var(--bord);border-radius:12px;padding:14px 16px;color:#fff;font-size:16px;font-weight:700;outline:none;margin-bottom:14px;font-family:'Nunito',sans-serif}
+.mod-inp:focus{border-color:var(--pur3)}
+.mod-sv{width:100%;background:var(--pur);border:none;border-radius:16px;padding:15px;color:#fff;font-size:16px;font-weight:900;cursor:pointer;margin-bottom:10px;font-family:'Nunito',sans-serif}
+.mod-ca{width:100%;background:none;border:none;color:var(--txt2);font-size:15px;font-weight:700;cursor:pointer;padding:8px;font-family:'Nunito',sans-serif}
+.rec-ov{display:none;position:fixed;inset:0;background:var(--bg);z-index:300;flex-direction:column}
+.rec-ov.on{display:flex}
+.rec-hd{display:flex;align-items:center;padding:14px 20px;flex-shrink:0;border-bottom:1px solid var(--bord)}
+.rec-bk{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer}
+.rec-bk svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+.rec-brand{flex:1;text-align:center;font-size:21px;font-weight:900;color:var(--pur3)}
+.rec-sc{flex:1;overflow-y:auto;padding:14px 14px 16px}.rec-sc::-webkit-scrollbar{display:none}
+.rec-card{background:var(--bg2);border-radius:18px;border:1px solid var(--bord);padding:22px 18px;margin-bottom:12px}
+.rec-type{font-size:11px;font-weight:800;color:var(--txt2);text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.rec-nm{font-size:22px;font-weight:900;text-align:center;margin-bottom:3px;color:#fff}
+.rec-dt{font-size:12px;font-weight:700;color:var(--txt2);text-align:center;margin-bottom:18px}
+.rec-am{font-size:36px;font-weight:300;text-align:center;letter-spacing:-1px;margin-bottom:16px;color:#fff}
+.rec-st{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:20px;padding:8px 20px;width:fit-content;margin:0 auto}
+.rec-st svg{width:15px;height:15px;stroke:#10b981;fill:none;stroke-width:2.5}
+.rec-st span{font-size:13px;font-weight:800;color:#10b981}
+.rec-blk{background:var(--bg2);border-radius:16px;border:1px solid var(--bord);padding:14px 16px;margin-bottom:12px}
+.rec-sl{font-size:11px;font-weight:900;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.rec-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.rec-row:last-child{border-bottom:none}
+.rec-rl{font-size:13px;font-weight:600;color:var(--txt2)}
+.rec-rv{font-size:13px;font-weight:800;text-align:right;max-width:58%;word-break:break-all;color:#fff;display:flex;align-items:center;gap:5px;justify-content:flex-end}
+.shr{padding:12px 14px;display:flex;gap:10px;border-top:1px solid var(--bord);flex-shrink:0;padding-bottom:max(16px,env(safe-area-inset-bottom))}
+.shr-btn{flex:1;background:var(--pur);border:none;border-radius:14px;padding:14px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Nunito',sans-serif}
+.shr-btn svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2}
+.shr-btn.ol{background:var(--bg2);border:1px solid var(--bord)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<div id="ldOv"><div class="spin"></div></div>
+
+<div class="sc on" id="scH">
+  <div class="sb"><span class="sb-t" id="t0"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div class="sa">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 18px 0">
+      <div class="av">ML<span class="av-sub">one</span></div>
+      <button style="width:40px;height:40px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--txt2)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+    </div>
+    <div class="ctabs"><div class="ctab on">PESOS</div><div class="ctab" style="color:#10b981">DÓLARES</div></div>
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:15px;font-weight:700;color:var(--txt2);margin-bottom:6px">Saldo</div>
+      <div style="font-size:52px;font-weight:800;color:var(--purbal);letter-spacing:-2px;line-height:1"><sup style="font-size:24px;font-weight:800;vertical-align:super;letter-spacing:0">$</sup>540.000<span style="font-size:26px;font-weight:800;vertical-align:super;margin-left:1px">,00</span></div>
+    </div>
+    <div class="qas">
+      <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 15h.01M17 15h.01M14 18h.01M17 18h.01M20 15h.01M20 18h.01"/></svg></div><span>Pago QR</span></div>
+      <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div><span>Depositar</span></div>
+      <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span>Préstamos</span></div>
+      <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="12" y2="15"/></svg></div><span>Servicios</span></div>
+    </div>
+    <div class="cw">
+      <div class="pc"><div style="font-size:13px;font-weight:700;color:var(--txt2)">Vendé · Dólar oficial</div><div style="display:flex;align-items:center;gap:8px"><div style="font-size:17px;font-weight:800;color:var(--grn)">$1.450</div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></div></div>
+      <div class="svc-c"><div style="font-size:15px;font-weight:800;margin-bottom:3px">Pagá tus servicios y recargas</div><div style="font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:12px">Todas tus facturas en un solo lugar</div><div style="display:flex;gap:8px"><div style="width:38px;height:38px;border-radius:50%;background:#00b0b9;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff">M</div><div style="width:38px;height:38px;border-radius:50%;background:#da291c;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff">C</div><div style="width:38px;height:38px;border-radius:50%;background:#0066cc;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff">P</div></div><button style="margin-top:12px;background:var(--pur);color:#fff;border:none;border-radius:20px;padding:9px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Buscar empresas</button></div>
+      <div class="inv-c"><div><div style="font-size:14px;font-weight:800;margin-bottom:5px">Generá rendimientos invirtiendo en Fondos</div><div style="font-size:13px;font-weight:700;color:var(--pur3)">Invertir →</div></div><div style="font-size:38px;flex-shrink:0">🚀</div></div>
+    </div>
+  </div>
+  <nav class="nav" id="nH"></nav>
+</div>
+
+<div class="sc" id="scInv">
+  <div class="sb"><span class="sb-t" id="t1"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div class="sa"><div style="padding:14px 20px 10px"><div style="font-size:21px;font-weight:900;margin-bottom:3px">Inversiones</div><div style="font-size:13px;font-weight:700;color:var(--txt2)">Hacé crecer tu dinero</div></div><div style="padding:0 14px;display:flex;flex-direction:column;gap:10px"><div style="background:var(--bg2);border-radius:14px;border:1px solid var(--bord);padding:18px"><div style="font-size:12px;font-weight:800;color:var(--txt2);margin-bottom:6px">Rendimiento del mes</div><div style="font-size:30px;font-weight:800;color:var(--grn)">+$2.430,00</div></div><div style="background:var(--bg2);border-radius:14px;border:1px solid var(--bord);padding:18px"><div style="font-size:15px;font-weight:900;margin-bottom:4px">Fondo Conservador</div><div style="font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:12px">TNA 78% · Bajo riesgo</div><div style="font-size:13px;font-weight:800;color:var(--pur3)">Invertir →</div></div><div style="background:var(--bg2);border-radius:14px;border:1px solid var(--bord);padding:18px"><div style="font-size:15px;font-weight:900;margin-bottom:4px">Plazo Fijo</div><div style="font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:12px">TNA 95% · 30 días</div><div style="font-size:13px;font-weight:800;color:var(--pur3)">Simular →</div></div></div></div>
+  <nav class="nav" id="nI"></nav>
+</div>
+
+<div class="sc" id="scTr">
+  <div class="sb"><span class="sb-t" id="t2"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div class="tr-hd"><div style="font-size:20px;font-weight:900">Transferir</div><div style="font-size:14px;font-weight:700;color:var(--pur3)">Mis datos</div></div>
+  <div class="srchb"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--txt2)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="sI" placeholder="Alias, CBU/CVU, nombre, email" oninput="fC()" autocomplete="off" autocorrect="off" autocapitalize="off"></div>
+  <div class="tacts">
+    <div class="ta pri"><svg viewBox="0 0 24 24" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Nueva</span></div>
+    <div class="ta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>Ingresar dinero</span></div>
+    <div class="ta"><svg viewBox="0 0 24 24"><line x1="8" y1="12" x2="16" y2="12"/><circle cx="12" cy="12" r="10"/></svg><span>Dividir gastos</span></div>
+  </div>
+  <div class="intlb"><span style="font-size:14px;font-weight:800;color:var(--pur3)">Envíos Internacionales</span><div style="display:flex;align-items:center;gap:8px"><span style="font-size:17px">&#127466;&#127482;&#127464;&#127476;&#127483;&#127466;</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--pur3)" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></div></div>
+  <div class="sl">Contactos</div>
+  <div class="cl" id="cList"></div>
+  <nav class="nav" id="nT"></nav>
+</div>
+
+<div class="sc" id="scAmt">
+  <div class="sb"><span class="sb-t" id="t3"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div class="amt-hd"><button class="bkb" onclick="go('scTr')"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button></div>
+  <div class="amt-ci">
+    <div class="amt-av" id="aAv"></div>
+    <div class="amt-nm" id="aNm"></div>
+    <div class="amt-cbu"><span id="aBkE" style="display:flex;align-items:center"></span><span id="aCbu"></span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--txt2)" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+  </div>
+  <div class="amt-da"><div class="amt-val" id="aVal">$0</div><div class="amt-sal">Tu saldo: $540.000,00</div></div>
+  <button class="cbtn" onclick="doTr()">Continuar</button>
+  <div class="np">
+    <div class="nk" onclick="nI('1')"><div class="n">1</div><div class="l">&nbsp;</div></div><div class="nk" onclick="nI('2')"><div class="n">2</div><div class="l">ABC</div></div><div class="nk" onclick="nI('3')"><div class="n">3</div><div class="l">DEF</div></div>
+    <div class="nk" onclick="nI('4')"><div class="n">4</div><div class="l">GHI</div></div><div class="nk" onclick="nI('5')"><div class="n">5</div><div class="l">JKL</div></div><div class="nk" onclick="nI('6')"><div class="n">6</div><div class="l">MNO</div></div>
+    <div class="nk" onclick="nI('7')"><div class="n">7</div><div class="l">PQRS</div></div><div class="nk" onclick="nI('8')"><div class="n">8</div><div class="l">TUV</div></div><div class="nk" onclick="nI('9')"><div class="n">9</div><div class="l">WXYZ</div></div>
+    <div class="nk" onclick="nI(',')"><div class="n">,</div><div class="l">&nbsp;</div></div><div class="nk" onclick="nI('0')"><div class="n">0</div><div class="l">&nbsp;</div></div><div class="nk del" onclick="nD()"><div class="n">&#9003;</div><div class="l">&nbsp;</div></div>
+  </div>
+</div>
+
+<div class="sc" id="scAn">
+  <div class="an-in" id="anIn">
+    <div id="pC" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+    <div class="an-chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="an-ti">Transferencia exitosa</div>
+    <div class="an-sub" id="anSub"></div>
+    <div class="an-btns">
+      <div class="an-btn" onclick="showRec()"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg><span>Comprobante</span></div>
+      <div class="an-btn"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>Categoría</span></div>
+      <div class="an-btn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Contacto</span></div>
+    </div>
+  </div>
+  <button class="bhm" onclick="go('scH')">Volver al inicio</button>
+</div>
+
+<div class="sc" id="scHist">
+  <div class="sb"><span class="sb-t" id="t4"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div style="padding:16px 20px 10px;flex-shrink:0"><div style="font-size:21px;font-weight:900">Historial</div><div style="font-size:13px;font-weight:700;color:var(--txt2);margin-top:3px" id="hSub">Sin movimientos aún</div></div>
+  <div class="sa" id="hList">
+    <div id="hEmp" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:60px 20px">
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="var(--txt2)" stroke-width="1.5" style="opacity:.3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <p style="font-size:14px;font-weight:700;color:var(--txt2);text-align:center;line-height:1.6">Aún no hiciste<br>ninguna transferencia</p>
+    </div>
+  </div>
+  <nav class="nav" id="nHist"></nav>
+</div>
+
+<div class="sc" id="scCards">
+  <div class="sb"><span class="sb-t"></span><div class="sb-r"><span class="sig"><span style="height:4px"></span><span style="height:7px"></span><span style="height:10px"></span><span style="height:13px"></span></span><span class="fiveg">5G</span><div style="display:flex;align-items:center;gap:2px"><div class="bat-b"><div class="bat-f"></div></div><span class="bat-p">21%</span></div></div></div>
+  <div class="sa"><div style="padding:16px 20px 12px"><div style="font-size:21px;font-weight:900">Tarjetas</div></div><div class="card-vis"><div class="card-wave"></div><div class="card-chip"></div><div class="card-no">**** **** **** 4821</div><div class="card-row"><div><div class="card-lbl">Titular</div><div class="card-val">Mateo Leyes Urburú</div></div><div><div class="card-lbl">Vence</div><div class="card-val">08/27</div></div></div><div class="card-visa">VISA</div></div><div class="cacts"><div class="ca"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><span>Ver datos</span></div><div class="ca"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Bloquear</span></div><div class="ca"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Límites</span></div><div class="ca"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Resumen</span></div></div><div class="ci-blk"><div class="ci-ti">Información</div><div class="ci-row"><span class="ci-lbl">Tipo</span><span class="ci-val">Débito Visa</span></div><div class="ci-row"><span class="ci-lbl">Estado</span><span class="ci-val" style="color:var(--grn)">Activa</span></div><div class="ci-row"><span class="ci-lbl">Saldo</span><span class="ci-val">$540.000,00</span></div><div class="ci-row"><span class="ci-lbl">Banco</span><span class="ci-val">Brubank</span></div><div class="ci-row"><span class="ci-lbl">Titular</span><span class="ci-val">Mateo Leyes Urburú</span></div></div></div>
+  <nav class="nav" id="nCards"></nav>
+</div>
+
+<div class="mod-ov" id="modOv">
+  <div class="mod-sh"><div class="mod-hdl"></div><div class="mod-ti">Editar contacto</div><input class="mod-inp" id="modInp" type="text" autocomplete="off"><button class="mod-sv" onclick="saveCt()">Guardar</button><button class="mod-ca" onclick="closeMod()">Cancelar</button></div>
+</div>
+
+<div class="rec-ov" id="recOv">
+  <div class="rec-hd"><button class="rec-bk" onclick="closeRec()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><div class="rec-brand">brubank</div><div style="width:36px"></div></div>
+  <div class="rec-sc">
+    <div class="rec-card"><div class="rec-type">Envío de dinero</div><div class="rec-nm" id="rNm"></div><div class="rec-dt" id="rDt"></div><div class="rec-am" id="rAm"></div><div class="rec-st"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Transferencia enviada</span></div></div>
+    <div class="rec-blk"><div class="rec-sl">Destino</div><div class="rec-row"><span class="rec-rl">Entidad</span><span class="rec-rv" id="rBk"></span></div><div class="rec-row"><span class="rec-rl">CBU / CVU</span><span class="rec-rv" id="rCbu"></span></div><div class="rec-row"><span class="rec-rl">CUIT / CUIL</span><span class="rec-rv" id="rCuit"></span></div></div>
+    <div class="rec-blk"><div class="rec-sl">Origen</div><div class="rec-row"><span class="rec-rl">Titular</span><span class="rec-rv">Mateo Leyes Urburú</span></div><div class="rec-row"><span class="rec-rl">CUIT / CUIL</span><span class="rec-rv">20-41284906-0</span></div><div class="rec-row"><span class="rec-rl">Banco</span><span class="rec-rv"><span style="background:#7c3aed;border-radius:50%;width:16px;height:16px;font-size:9px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:900;flex-shrink:0">b</span>Brubank</span></div><div class="rec-row"><span class="rec-rl">Tipo</span><span class="rec-rv">Caja de ahorro en pesos</span></div></div>
+  </div>
+  <div class="shr"><button class="shr-btn"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Copiar imagen</button><button class="shr-btn ol"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</button></div>
+</div>
+
+</div>
+<script>
+function mkSVG(w,h,html){const ns='http://www.w3.org/2000/svg';const s=document.createElementNS(ns,'svg');s.setAttribute('viewBox','0 0 '+w+' '+h);s.style.cssText='width:100%;height:100%;display:block;';s.innerHTML=html;return s;}
+function mkLogo(bk,sz){
+  const w=document.createElement('div');
+  w.style.cssText='width:'+sz+'px;height:'+sz+'px;border-radius:50%;overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;';
+  const logos={
+    mercadopago:`<circle cx="50" cy="50" r="50" fill="#fff"/>
+      <ellipse cx="50" cy="50" rx="44" ry="38" fill="#009ee3" stroke="#1a3579" stroke-width="5"/>
+      <path d="M26 54 C23 48 22 40 26 35 C29 31 34 30 38 32 L44 36 L49 29 C52 25 57 23 61 26 C64 28 65 32 63 36 L58 43 L65 40 C69 39 73 41 74 45 C75 48 73 52 70 54 L60 61 C56 65 49 66 44 63 Z" fill="#fff"/>
+      <path d="M74 46 C77 52 78 60 74 65 C71 69 66 70 62 68 L56 64 L51 71 C48 75 43 77 39 74 C36 72 35 68 37 64 L42 57 L35 60 C31 61 27 59 26 55 C25 52 27 48 30 46 L40 39 C44 35 51 34 56 37 Z" fill="rgba(255,255,255,0.5)"/>
+      <path d="M28 53 C26 49 25 43 28 39 C30 36 33 35 36 37 L41 40" fill="none" stroke="#1a3579" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M72 47 C74 51 75 57 72 61 C70 64 67 65 64 63 L59 60" fill="none" stroke="#1a3579" stroke-width="2.5" stroke-linecap="round"/>`,
+    galicia:`<circle cx="50" cy="50" r="50" fill="#ff6600"/>
+      <rect x="47" y="22" width="6" height="56" rx="3" fill="#fff"/>
+      <rect x="22" y="47" width="56" height="6" rx="3" fill="#fff"/>`,
+    santander:`<circle cx="50" cy="50" r="50" fill="#fff"/>
+      <path d="M50 14 C50 14 30 25 30 38 C30 46 35 52 41 56 C38 52 36 47 36 41 C36 28 46 20 50 14Z" fill="#ec0000"/>
+      <path d="M50 14 C50 14 70 25 70 38 C70 46 65 52 59 56 C62 52 64 47 64 41 C64 28 54 20 50 14Z" fill="#ec0000"/>
+      <path d="M34 57 C38 65 43 70 50 70 C57 70 62 65 66 57 C62 60 56 62 50 62 C44 62 38 60 34 57Z" fill="#ec0000"/>`,
+    naranjax:`<circle cx="50" cy="50" r="50" fill="#fff"/>
+      <text x="18" y="66" font-family="Arial Black,Arial" font-weight="900" font-size="46" fill="#ff6600" font-style="italic">N</text>
+      <text x="55" y="63" font-family="Arial Black,Arial" font-weight="900" font-size="32" fill="#ff6600">x</text>`,
+    brubank:`<circle cx="50" cy="50" r="50" fill="#6c3fc5"/>
+      <text x="50" y="67" font-family="Arial" font-weight="900" font-size="58" fill="#fff" text-anchor="middle">b</text>`
+  };
+  w.appendChild(mkSVG(100,100,logos[bk]||logos.brubank));
+  return w;
+}
+
+const BK={
+  mercadopago:{name:'MercadoPago'},
+  galicia:{name:'Banco Galicia'},
+  santander:{name:'Banco Santander'},
+  naranjax:{name:'Naranja X'},
+  brubank:{name:'Brubank'}
+};
+
+function rCBU(p){let n='';for(let i=0;i<10;i++)n+=Math.floor(Math.random()*10);return p+n}
+function rCUIT(){const p=['20','27','30'][~~(Math.random()*3)];let m='';for(let i=0;i<8;i++)m+=~~(Math.random()*10);return p+'-'+m+'-'+~~(Math.random()*10)}
+
+let cts=[
+  {name:'Lucas Fernández', ini:'LF',bk:'mercadopago',cbu:rCBU('000000310006'),cuit:rCUIT()},
+  {name:'Valentina Torres',ini:'VT',bk:'galicia',    cbu:rCBU('007000310001'),cuit:rCUIT()},
+  {name:'Sebastián Romero',ini:'SR',bk:'santander',  cbu:rCBU('072000310002'),cuit:rCUIT()},
+  {name:'Camila López',    ini:'CL',bk:'naranjax',   cbu:rCBU('453000080001'),cuit:rCUIT()},
+  {name:'Ignacio Paredes', ini:'IP',bk:'brubank',    cbu:rCBU('143300310004'),cuit:rCUIT()},
+];
+let sIdx=0,amR='',curT={},hist=[],edI=-1;
+
+function clk(){const n=new Date(),t=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');document.querySelectorAll('.sb-t').forEach(e=>e.textContent=t);}
+setInterval(clk,15000);clk();
+
+const NV=[
+  {id:'scH',  lbl:'Inicio',     ico:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>'},
+  {id:'scInv',lbl:'Inversiones',ico:'<path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/>'},
+  {id:'scTr', lbl:'Transferir', ico:'<polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>'},
+  {id:'scCards',lbl:'Tarjetas', ico:'<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>',bdg:true},
+  {id:'scHist',lbl:'Historial', ico:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'},
+];
+function mkNav(cid,aid){
+  const c=document.getElementById(cid);if(!c)return;c.innerHTML='';
+  NV.forEach(item=>{
+    const d=document.createElement('div');
+    d.className='ni'+(item.id===aid?' on':'')+(item.bdg?' bdg':'');
+    d.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="2">'+item.ico+'</svg><span>'+item.lbl+'</span>';
+    d.onclick=()=>go(item.id);c.appendChild(d);
+  });
+}
+mkNav('nH','scH');mkNav('nI','scInv');mkNav('nT','scTr');mkNav('nHist','scHist');mkNav('nCards','scCards');
+
+function go(id){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');clk();
+  if(id==='scTr'){const si=document.getElementById('sI');if(si)si.value='';rndr('');}
+}
+
+function rndr(f){
+  const lst=document.getElementById('cList');if(!lst)return;lst.innerHTML='';
+  const src=f?cts.filter(c=>c.name.toLowerCase().includes(f.toLowerCase())):cts;
+  src.forEach(c=>{
+    const ri=cts.indexOf(c);const b=BK[c.bk];
+    const row=document.createElement('div');row.className='ci';
+    row.appendChild(mkLogo(c.bk,46));
+    const info=document.createElement('div');info.className='cinfo';info.style.cursor='pointer';info.onclick=()=>selCt(ri);
+    const bb=document.createElement('span');bb.className='bb';bb.appendChild(mkLogo(c.bk,13));bb.appendChild(document.createTextNode(' '+b.name));
+    const cbk=document.createElement('div');cbk.className='cbk';cbk.appendChild(bb);
+    info.innerHTML='<div class="cnm">'+c.name+'</div><div class="cdt">'+b.name+' · \u00b7\u00b7\u00b7'+c.cbu.slice(-4)+'</div>';
+    info.appendChild(cbk);
+    const more=document.createElement('div');more.className='cm';more.onclick=()=>openMod(ri);
+    more.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>';
+    row.appendChild(info);row.appendChild(more);lst.appendChild(row);
+  });
+}
+function fC(){const v=document.getElementById('sI');if(v)rndr(v.value);}
+
+function selCt(i){
+  sIdx=i;const c=cts[i];const b=BK[c.bk];
+  const av=document.getElementById('aAv');av.innerHTML='';av.appendChild(mkLogo(c.bk,58));
+  document.getElementById('aNm').textContent=c.name;
+  document.getElementById('aCbu').textContent=c.cbu;
+  const be=document.getElementById('aBkE');be.innerHTML='';be.appendChild(mkLogo(c.bk,17));
+  amR='';document.getElementById('aVal').textContent='$0';
+  go('scAmt');
+}
+
+function openMod(i){edI=i;document.getElementById('modInp').value=cts[i].name;document.getElementById('modOv').classList.add('on')}
+function closeMod(){document.getElementById('modOv').classList.remove('on');edI=-1}
+function saveCt(){
+  const v=document.getElementById('modInp').value.trim();if(!v||edI<0)return;
+  cts[edI].name=v;const p=v.split(' ');cts[edI].ini=(p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();
+  rndr('');closeMod();
+}
+
+function nI(d){
+  if(d===','&&amR.includes(','))return;if(d===','&&!amR)return;
+  if(amR.includes(',')&&amR.split(',')[1].length>=2)return;
+  if(!amR.includes(',')&&amR.length>=8)return;
+  amR+=d;updA();
+}
+function nD(){amR=amR.slice(0,-1);updA();}
+function updA(){
+  if(!amR){document.getElementById('aVal').textContent='$0';return;}
+  const[i,d]=amR.split(',');
+  document.getElementById('aVal').textContent='$'+parseInt(i||'0',10).toLocaleString('es-AR')+(amR.includes(',')?','+(d||''):'');
+}
+
+function doTr(){
+  if(!amR||amR==='0')return;
+  const c=cts[sIdx];const b=BK[c.bk];
+  const now=new Date();
+  const ds=now.toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'});
+  const ts=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const[int,dec]=amR.split(',');
+  const af='$ '+parseInt(int||'0',10).toLocaleString('es-AR')+(amR.includes(',')?','+(dec||'').padEnd(2,'0'):',00');
+  curT={name:c.name,bk:c.bk,bkName:b.name,cbu:c.cbu,cuit:c.cuit,amount:af,date:ds+' - '+ts,dateS:ds,time:ts};
+  document.getElementById('ldOv').classList.add('on');
+  setTimeout(()=>{
+    document.getElementById('ldOv').classList.remove('on');go('scAn');
+    document.getElementById('anSub').textContent='Le enviaste '+af+' a '+c.name;
+    const pc=document.getElementById('pC');pc.innerHTML='';
+    const cols=['#7c3aed','#a855f7','#c084fc','#ddd6fe','#10b981','#6ee7b7','#fff'];
+    for(let i=0;i<36;i++){
+      setTimeout(()=>{
+        const p=document.createElement('div');p.className='pt';
+        const sz=3+Math.random()*11;
+        p.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+cols[~~(Math.random()*cols.length)]+';left:'+(10+Math.random()*80)+'%;top:40%;position:absolute;border-radius:50%;';
+        pc.appendChild(p);
+        const tx=(Math.random()-.5)*240,ty=-80-Math.random()*160;
+        p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+tx+'px,'+ty+'px) scale(0)',opacity:0}],
+          {duration:700+Math.random()*500,easing:'ease-out'}).onfinish=()=>p.remove();
+      },i*22);
+    }
+    hist.unshift({...curT});rndrH();
+  },3000);
+}
+
+function rndrH(){
+  const lst=document.getElementById('hList');const em=document.getElementById('hEmp');const sb=document.getElementById('hSub');
+  if(!lst)return;
+  if(hist.length===0){if(em)em.style.display='flex';if(sb)sb.textContent='Sin movimientos aún';return;}
+  if(em)em.style.display='none';if(sb)sb.textContent=hist.length+' transferencia'+(hist.length!==1?'s':'');
+  lst.querySelectorAll('.hi').forEach(e=>e.remove());
+  hist.forEach(h=>{
+    const b=BK[h.bk];const d=document.createElement('div');d.className='hi';
+    const ic=document.createElement('div');ic.className='hi-ic';ic.appendChild(mkLogo(h.bk,42));d.appendChild(ic);
+    const inf=document.createElement('div');inf.className='hi-inf';
+    inf.innerHTML='<div class="hi-nm">'+h.name+'</div><div class="hi-dt">'+h.bkName+' · '+h.dateS+'</div>';d.appendChild(inf);
+    const r=document.createElement('div');r.style.cssText='text-align:right;flex-shrink:0';
+    r.innerHTML='<div class="hi-am">-'+h.amount+'</div><div class="hi-st">&#10003; Enviada '+h.time+'</div>';d.appendChild(r);
+    d.onclick=()=>{curT=h;showRec();};lst.insertBefore(d,lst.querySelector('.hi')||null);
+  });
+}
+
+function showRec(){
+  const t=curT;const b=BK[t.bk];
+  document.getElementById('rNm').textContent=t.name;
+  document.getElementById('rDt').textContent=t.date;
+  document.getElementById('rAm').textContent=t.amount;
+  document.getElementById('rCbu').textContent=t.cbu;
+  document.getElementById('rCuit').textContent=t.cuit;
+  const rb=document.getElementById('rBk');rb.innerHTML='';rb.appendChild(mkLogo(t.bk,18));rb.appendChild(document.createTextNode(' '+t.bkName));
+  document.getElementById('recOv').classList.add('on');
+}
+function closeRec(){document.getElementById('recOv').classList.remove('on');}
+
+rndr('');
+</script>
+</body>
+</html>
